@@ -5,6 +5,10 @@ const consInput = document.querySelector('#cons');
 const ratingInput = document.querySelector('#rating');
 const reviewsList = document.querySelector('#reviewsList');
 const avgRatingSpan = document.querySelector('#avgRating');
+const searchInput = document.querySelector('#searchCompanyInput');
+const searchButton = document.querySelector('#searchButton');
+
+searchButton.addEventListener('click', searchCompany);
 
 // Load reviewsData from server on page load
 async function loadReviews() {
@@ -98,6 +102,23 @@ function calculateAndDisplayAverageRating(avgRatings) {
 
     avgRatingSpan.appendChild(avgRatingElement);
   });
+}
+
+async function searchCompany(e)
+{
+  
+  const char = searchInput.value.toLowerCase();
+  try {
+    const response = await axios.get("/get-review");
+    const filteredReviews = response.data.filter((review) =>
+            review.companyName.toLowerCase().includes(char)
+    );
+    console.log(filteredReviews);
+    showReviewsOnScreen(filteredReviews);
+  } catch (error) {
+    console.log(error);
+  }
+
 }
 
 function clearInputs() {
