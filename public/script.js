@@ -6,23 +6,22 @@ const ratingInput = document.querySelector('#rating');
 const reviewsList = document.querySelector('#reviewsList');
 const avgRatingSpan = document.querySelector('#avgRating');
 
-const reviewsData = []; // Store reviews data
-
-reviewForm.addEventListener('submit', onSubmit);
-
-window.addEventListener("DOMContentLoaded", async () => {
+// Load reviewsData from server on page load
+async function loadReviews() {
   try {
     const response = await axios.get("/get-review");
     console.log('Received Reviews:', response);
-    reviewsData.push(...response.data);
-    showReviewsOnScreen();
-  }
-  catch (err) {
+    showReviewsOnScreen(response.data);
+  } catch (err) {
     console.log(err);
   }
-});
+}
 
-function onSubmit(e) {
+reviewForm.addEventListener('submit', onSubmit);
+
+window.addEventListener("DOMContentLoaded", loadReviews);
+
+async function onSubmit(e) {
   e.preventDefault();
 
   const reviewDetails = {
@@ -32,27 +31,28 @@ function onSubmit(e) {
     rating: ratingInput.value
   };
 
-  reviewsData.push(reviewDetails); // Add new review to data
-
   try {
-    // Update the server with the new review (axios.post("/add-review", reviewDetails) ...)
+    // Update the server with the new review
+    const response = await axios.post("/add-review", reviewDetails);
+    console.log('Review created successfully:', response.data);
 
-    // Calculate and display average rating
-    showReviewsOnScreen();
+    // Reload reviews from the server
+    loadReviews();
+
+    // Clear form inputs
     clearInputs();
-
   } catch (err) {
     console.log('Error creating review:', err);
   }
 }
 
-function showReviewsOnScreen() {
+function showReviewsOnScreen(reviews) {
   reviewsList.innerHTML = '';
 
-  if (Array.isArray(reviewsData)) {
+  if (Array.isArray(reviews)) {
     const avgRatings = {};
 
-    reviewsData.forEach((review) => {
+    reviews.forEach((review) => {
       const companyElement = document.createElement('div');
       companyElement.classList.add('review');
 
