@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Reviews</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="review-form">
+        <h2>Submit a Review</h2>
+        <form id="reviewForm">
+            <label for="companyName">Company Name:</label>
+            <input type="text" id="companyName" required>
+            <br>
+            <label for="pros">Pros:</label>
+            <textarea id="pros" rows="3" required></textarea>
+            <br>
+            <label for="cons">Cons:</label>
+            <textarea id="cons" rows="3" required></textarea>
+            <br>
+            <label for="rating">Rating:</label>
+            <select id="rating" required>
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="5">5 Stars</option>
+            </select>
+
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+
+    <div class="reviews-container" id="reviewsContainer">
+        <h2>All Reviews</h2>
+        <div id="reviewsList"></div>
+        <p id="averageRating">Average Ratings:</p>
+        <div id="avgRating"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
